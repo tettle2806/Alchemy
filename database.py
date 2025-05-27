@@ -1,9 +1,8 @@
 from datetime import datetime
 
-from sqlalchemy import func, Integer, ARRAY
+from sqlalchemy import func, Integer, ARRAY, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr
 from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_engine
-from sqlalchemy.testing.schema import mapped_column
 
 from typing import Annotated, List
 from sqlalchemy import String
@@ -18,8 +17,10 @@ engine = create_async_engine(url=DATABASE_URL)
 # Создаем фабрику сессий для взаимодействия с базой данных
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
-uniq_str_an = Annotated[str, mapped_column(unique=True)] # Аннотация для уникальных строковых полей
-array_or_none_an = Annotated[List[str] | None, mapped_column(ARRAY(String))] # Аннотация для массивов строк или None
+uniq_str_an = Annotated[str, mapped_column(unique=True)]  # Аннотация для уникальных строковых полей
+array_or_none_an = Annotated[List[str] | None, mapped_column(ARRAY(String))]  # Аннотация для массивов строк или None
+content_an = Annotated[Text, mapped_column(Text)]  # Аннотация для текстового контента, допускающего значение None
+
 
 # Базовый класс для всех моделей
 class Base(AsyncAttrs, DeclarativeBase):
