@@ -1,0 +1,12 @@
+[project]
+name = "structuredb"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.16.1",
+    "asyncpg>=0.30.0",
+    "pydantic>=2.11.5",
+    "pydantic-settings>=2.9.1",
+    "sqlalchemy>=2.0.41",
+]
