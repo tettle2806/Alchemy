@@ -53,6 +53,10 @@ class Post(Base):
     photos_url: Mapped[array_or_none_an]
     status: Mapped[StatusPost] = mapped_column(default=StatusPost.PUBLISHED, server_default=text("'DRAFT'"))
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
+    user: Mapped["User"] = relationship(
+        "User",
+        back_populates="posts"
+    )
 
 class Comment(Base):
     content: Mapped[Text]
