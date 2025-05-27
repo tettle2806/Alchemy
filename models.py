@@ -64,3 +64,8 @@ class Comment(Base):
     post_id: Mapped[int] = mapped_column(ForeignKey('posts.id'))
     is_published: Mapped[bool] = mapped_column(default=True, server_default=text("'false'"))
     rating: Mapped[RatingEnum] = mapped_column(default=RatingEnum.FIVE, server_default=text("'SEVEN'"))
+    comments: Mapped[list["Comment"]] = relationship(
+        "Comment",
+        back_populates="post",
+        cascade="all, delete-orphan"
+    )
