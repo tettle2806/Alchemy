@@ -19,6 +19,12 @@ class User(Base):
         userlist=False,
         lazy="joined"
     )
+    posts: Mapped[list["Post"]] = relationship(
+        "Post",
+        back_populates="user",
+        cascade="all, delete-orphan"  # Удаляет посты при удалении пользователя
+    )
+
 
 
 class Profile(Base):
