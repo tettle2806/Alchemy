@@ -8,7 +8,6 @@ class User(Base):
     username: Mapped[uniq_str_an]
     email: Mapped[uniq_str_an]
     password: Mapped[str]
-    profile_id: Mapped[int | None] = mapped_column(ForeignKey('profiles.id'))
 
     # Связь один-к-одному с Profile
     profile: Mapped["Profile"] = relationship(
@@ -22,14 +21,14 @@ class User(Base):
     posts: Mapped[list["Post"]] = relationship(
         "Post",
         back_populates="user",
-        cascade="all, delete-orphan"  # При удалении User удаляются и связанные Post
+        cascade="all, delete-orphan"
     )
 
     # Связь один-ко-многим с Comment
     comments: Mapped[list["Comment"]] = relationship(
         "Comment",
         back_populates="user",
-        cascade="all, delete-orphan"  # При удалении User удаляются и связанные Comment
+        cascade="all, delete-orphan"
     )
 
 
@@ -38,14 +37,18 @@ class Profile(Base):
     last_name: Mapped[str | None]
     age: Mapped[int | None]
     gender: Mapped[GenderEnum]
-    profession: Mapped[ProfessionEnum] = mapped_column(default=ProfessionEnum.DEVELOPER,
-                                                       server_default=text("'UNEMPLOYED'"))
+    profession: Mapped[ProfessionEnum] = mapped_column(
+        default=ProfessionEnum.DEVELOPER,
+        server_default=text("'UNEMPLOYED'")
+    )
     interests: Mapped[array_or_none_an]
     contacts: Mapped[dict | None] = mapped_column(JSON)
 
+    # Внешний ключ на таблицу users
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), unique=True)
+
     # Обратная связь один-к-одному с User
     user: Mapped["User"] = relationship(
-        "User",
         back_populates="profile",
         uselist=False
     )
