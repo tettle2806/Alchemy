@@ -98,9 +98,8 @@ async def get_user_by_id_example_3(username: str, email: str, password: str,
         await session.rollback()  # Откатываем транзакцию при ошибке
         raise e
 
-
 @connection
-async def create_user_example_4(user_data: list[dict], session: AsyncSession) -> list[int]:
+async def create_user_example_4(users_data: list[dict], session: AsyncSession) -> list[int]:
     """
     Создает нескольких пользователей с использованием ORM SQLAlchemy.
 
@@ -112,20 +111,29 @@ async def create_user_example_4(user_data: list[dict], session: AsyncSession) ->
     Возвращает:
     - list[int] - список идентификаторов созданных пользователей
     """
-
-    user_list = [
-        User(username=user['username'],
-             email=user['email'],
-             password=user['password']
-             )
-        for user in user_data
+    users_list = [
+        User(
+            username=user_data['username'],
+            email=user_data['email'],
+            password=user_data['password']
+        )
+        for user_data in users_data
     ]
-
-    session.add_all(user_list)
+    session.add_all(users_list)
     await session.commit()
-    return [user.id for user in user_list]
+    return [user.id for user in users_list]
 
 
+users = [
+    {"username": "michael_brown", "email": "michael.brown@example.com", "password": "pass1234"},
+    {"username": "sarah_wilson", "email": "sarah.wilson@example.com", "password": "mysecurepwd"},
+    {"username": "david_clark", "email": "david.clark@example.com", "password": "davidsafe123"},
+    {"username": "emma_walker", "email": "emma.walker@example.com", "password": "walker987"},
+    {"username": "james_martin", "email": "james.martin@example.com", "password": "martinpass001"}
+]
+
+
+run(create_user_example_4(users_data=users))
 
 # user_profile = run(get_user_by_id_example_2(
 #     username="john_doe",
