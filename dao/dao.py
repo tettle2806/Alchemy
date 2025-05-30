@@ -64,6 +64,16 @@ class UserDAO(BaseDAO):
         records = result.all()
         return records
 
+    @classmethod
+    async def get_user_info(cls, session: AsyncSession, user_id: int):
+        query = select(cls.model).filter_by(id=user_id)
+        result = await session.execute(query)
+        user_info =result.scalar_one_or_none()
+        return user_info
+
+
+
+
 class ProfileDAO(BaseDAO):
     model = Profile
 
