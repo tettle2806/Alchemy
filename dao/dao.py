@@ -47,6 +47,15 @@ class UserDAO(BaseDAO):
         return user  # Возвращаем объект пользователя
 
 
+    @classmethod
+    async def get_all_users(cls, session: AsyncSession):
+        query = select(cls.model)
+        result = await session.execute(query)
+        records = result.scalars().all()
+
+        return records
+
+
 
 class ProfileDAO(BaseDAO):
     model = Profile
