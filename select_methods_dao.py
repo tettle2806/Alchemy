@@ -31,6 +31,19 @@ async def select_full_user_info2(session, user_id: int):
     return {'message': f'Пользователь с ID {user_id} не найден!'}
 
 
+@connection
+async def select_full_user_info_email(session, user_id: int, email: str):
+    rez = await UserDAO.find_one_or_none(session=session, id=user_id, email=email)
+    if rez:
+        return UserPydantic.model_validate(rez).model_dump()
+    return {'message': f'Пользователь с ID {user_id} не найден!'}
+
+
+info = run(select_full_user_info_email(user_id=20, email='bob.smith@example.com'))
+print(info)
+
+
+
 # info = run(select_full_user_info2(user_id=1))
 # print(info)
 # {'username': 'yakvenalex', 'email': 'example@example.com', 'profile': None}
