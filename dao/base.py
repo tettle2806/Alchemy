@@ -33,7 +33,6 @@ class BaseDAO:
             raise e
         return new_instances
 
-
     @classmethod
     async def find_one_or_none_by_id(cls, data_id: int, session: AsyncSession):
         query = select(cls.model).filter_by(id=data_id)
@@ -42,7 +41,7 @@ class BaseDAO:
         return record
 
     @classmethod
-    async def find_one_or_none(cls, session:AsyncSession, **filter_by):
+    async def find_one_or_none(cls, session: AsyncSession, **filter_by):
         query = select(cls.model).filter_by(**filter_by)
         result = await session.execute(query)
         record = result.scalar_one_or_none()
