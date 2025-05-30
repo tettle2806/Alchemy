@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import func, Integer, ARRAY, Text
-from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr
+from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr, class_mapper
 from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_engine
 
 from typing import Annotated, List

@@ -1,3 +1,4 @@
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from dao.base import BaseDAO
@@ -55,7 +56,13 @@ class UserDAO(BaseDAO):
 
         return records
 
-
+    @classmethod
+    async def get_username_id(cls, session:AsyncSession):
+        query = select(cls.model.id, cls.model.username)
+        print(query)
+        result = await session.execute(query)
+        records = result.all()
+        return records
 
 class ProfileDAO(BaseDAO):
     model = Profile
